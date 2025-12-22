@@ -3,26 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevOps Project</title>
+    <title>Pomodoro Study Timer - Focus & Productivity</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🍅 Pomodoro Study Timer</h1>
+            <p>Master your focus, one session at a time</p>
+        </header>
 
-    <header>
-        <h1>Welcome to My Simple Webpage</h1>
-        <p>This page is created for my Git Bash & GitHub project.</p>
-    </header>
-    <section class="content">
-        <h2>About This Project</h2>
-        <p>
-            This is a basic HTML, CSS, and JavaScript project created to practice 
-            version control using Git and GitHub. Through this project, I will perform 
-            commits, branching, merging, and conflict resolution.
-        </p>
-        <button id="clickBtn">Click Me</button>
-        <p id="message"></p>
-    </section>	
-    
+        <!-- Main Timer Section -->
+        <main class="timer-section">
+            <!-- Mode Display -->
+            <div class="mode-display">
+                <span id="currentMode">Focus Time</span>
+            </div>
+
+            <!-- Timer Display -->
+            <div class="timer-display">
+                <div class="time-circle">
+                    <svg class="progress-ring" width="280" height="280">
+                        <circle class="progress-ring-circle" stroke="#e0e0e0" stroke-width="8" fill="transparent" r="130" cx="140" cy="140"/>
+                        <circle class="progress-ring-circle-fill" stroke="url(#gradient)" stroke-width="8" fill="transparent" r="130" cx="140" cy="140"/>
+                        <defs>
+                            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <div class="time-text">
+                        <span id="timeDisplay">25:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Control Buttons -->
+            <div class="controls">
+                <button id="startBtn" class="btn btn-primary">
+                    <span>Start</span>
+                </button>
+                <button id="pauseBtn" class="btn btn-secondary" disabled>
+                    <span>Pause</span>
+                </button>
+                <button id="resetBtn" class="btn btn-tertiary">
+                    <span>Reset</span>
+                </button>
+            </div>
+
+            <!-- Session Counter -->
+            <div class="session-info">
+                <div class="session-counter">
+                    <span class="label">Sessions Completed:</span>
+                    <span id="sessionCount" class="count">0</span>
+                </div>
+            </div>
+
+            <!-- Settings Panel -->
+            <div class="settings-panel">
+                <h3>⚙️ Timer Settings</h3>
+                <div class="setting-item">
+                    <label for="workDuration">Work Duration (minutes):</label>
+                    <input type="number" id="workDuration" min="1" max="60" value="25">
+                </div>
+                <div class="setting-item">
+                    <label for="breakDuration">Break Duration (minutes):</label>
+                    <input type="number" id="breakDuration" min="1" max="30" value="5">
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>Built with 💜 for productivity | Git Workflow Project</p>
+        </footer>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
