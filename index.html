@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="container">
         <!-- Header -->
@@ -26,8 +28,10 @@
             <div class="timer-display">
                 <div class="time-circle">
                     <svg class="progress-ring" width="280" height="280">
-                        <circle class="progress-ring-circle" stroke="#e0e0e0" stroke-width="8" fill="transparent" r="130" cx="140" cy="140"/>
-                        <circle class="progress-ring-circle-fill" stroke="url(#gradient)" stroke-width="8" fill="transparent" r="130" cx="140" cy="140"/>
+                        <circle class="progress-ring-circle" stroke="#e0e0e0" stroke-width="8" fill="transparent"
+                            r="130" cx="140" cy="140" />
+                        <circle class="progress-ring-circle-fill" stroke="url(#gradient)" stroke-width="8"
+                            fill="transparent" r="130" cx="140" cy="140" />
                         <defs>
                             <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
                                 <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
@@ -62,6 +66,21 @@
                 </div>
             </div>
 
+            <!-- Task List Section -->
+            <div class="task-list-section">
+                <h3>📝 My Tasks</h3>
+                <div class="task-input-group">
+                    <input type="text" id="taskInput" placeholder="What are you working on?" maxlength="100">
+                    <button id="addTaskBtn" class="btn-add-task">
+                        <span>+ Add</span>
+                    </button>
+                </div>
+                <ul id="taskList" class="task-list">
+                    <!-- Tasks will be added here dynamically -->
+                </ul>
+                <p class="task-empty-state" id="emptyState">No tasks yet. Add one to get started! 🚀</p>
+            </div>
+
             <!-- Settings Panel -->
             <div class="settings-panel">
                 <h3>⚙️ Timer Settings</h3>
@@ -84,4 +103,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>
