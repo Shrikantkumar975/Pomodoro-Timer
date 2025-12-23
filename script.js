@@ -14,6 +14,7 @@ class PomodoroTimer {
         // Settings
         this.workDuration = 25; // minutes
         this.breakDuration = 5; // minutes
+        this.soundEnabled = localStorage.getItem('pomodoroSound') !== 'false';
 
         // DOM Elements
         this.timeDisplay = document.getElementById('timeDisplay');
@@ -22,6 +23,7 @@ class PomodoroTimer {
         this.startBtn = document.getElementById('startBtn');
         this.pauseBtn = document.getElementById('pauseBtn');
         this.resetBtn = document.getElementById('resetBtn');
+        this.soundToggle = document.getElementById('soundToggle');
         this.workDurationInput = document.getElementById('workDuration');
         this.breakDurationInput = document.getElementById('breakDuration');
         this.progressCircle = document.querySelector('.progress-ring-circle-fill');
@@ -168,9 +170,22 @@ class PomodoroTimer {
         this.progressCircle.style.strokeDashoffset = offset;
     }
 
+    toggleSound() {
+        this.soundEnabled = !this.soundEnabled;
+        localStorage.setItem('pomodoroSound', this.soundEnabled);
+
+        if (this.soundEnabled) {
+            this.soundToggle.classList.remove('muted');
+            this.soundToggle.querySelector('span').textContent = '🔔';
+        } else {
+            this.soundToggle.classList.add('muted');
+            this.soundToggle.querySelector('span').textContent = '🔕';
+        }
+    }
+
     showNotification(message) {
         // Simple notification (can be enhanced with browser notifications later)
-        if ('Notification' in window && Notification.permission === 'granted') {
+        if (this.soundEnabled && 'Notification' in window && Notification.permission === 'granted') {
             new Notification('Pomodoro Timer', {
                 body: message,
                 icon: '🍅'

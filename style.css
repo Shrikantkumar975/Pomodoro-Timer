@@ -89,6 +89,12 @@ header p {
   padding: var(--spacing-xl);
   box-shadow: var(--shadow-lg);
   animation: fadeInUp 0.6s ease-out;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.timer-section:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg), 0 0 30px rgba(102, 126, 234, 0.2);
 }
 
 .mode-display {
@@ -119,6 +125,11 @@ header p {
   position: relative;
   width: 280px;
   height: 280px;
+  transition: transform 0.4s ease;
+}
+
+.time-circle:hover {
+  transform: scale(1.05) rotate(5deg);
 }
 
 .progress-ring {
@@ -232,6 +243,27 @@ header p {
 .btn-tertiary:hover {
   background: rgba(245, 87, 108, 0.3);
   transform: translateY(-2px);
+}
+
+.btn-sound {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  padding: 1rem;
+  min-width: 60px;
+}
+
+.btn-sound:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+.btn-sound.muted {
+  opacity: 0.5;
+}
+
+.btn-sound.muted span {
+  text-decoration: line-through;
 }
 
 .btn:disabled {
