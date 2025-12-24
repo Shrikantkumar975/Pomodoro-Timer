@@ -14,7 +14,10 @@ class PomodoroTimer {
         // Settings
         this.workDuration = 25; // minutes
         this.breakDuration = 5; // minutes
+<<<<<<< HEAD
         this.soundEnabled = localStorage.getItem('pomodoroSound') !== 'false';
+=======
+>>>>>>> bugfix
 
         // DOM Elements
         this.timeDisplay = document.getElementById('timeDisplay');
@@ -170,6 +173,7 @@ class PomodoroTimer {
         this.progressCircle.style.strokeDashoffset = offset;
     }
 
+<<<<<<< HEAD
     toggleSound() {
         this.soundEnabled = !this.soundEnabled;
         localStorage.setItem('pomodoroSound', this.soundEnabled);
@@ -183,6 +187,8 @@ class PomodoroTimer {
         }
     }
 
+=======
+>>>>>>> bugfix
     showNotification(message) {
         // Simple notification (can be enhanced with browser notifications later)
         if (this.soundEnabled && 'Notification' in window && Notification.permission === 'granted') {
@@ -308,10 +314,40 @@ class TaskList {
 // Initialize timer and task list when page loads
 document.addEventListener('DOMContentLoaded', () => {
     const timer = new PomodoroTimer();
+<<<<<<< HEAD
     const taskList = new TaskList();
+=======
+>>>>>>> bugfix
 
     // Request notification permission
     if ('Notification' in window && Notification.permission === 'default') {
         Notification.requestPermission();
     }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+        // Ignore if typing in input field
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+        switch (e.key.toLowerCase()) {
+            case ' ':  // Spacebar - Start/Pause
+                e.preventDefault();
+                if (timer.isRunning) {
+                    timer.pause();
+                } else {
+                    timer.start();
+                }
+                break;
+            case 'r':  // R - Reset
+                e.preventDefault();
+                timer.reset();
+                break;
+            case 's':  // S - Toggle sound
+                e.preventDefault();
+                if (timer.soundToggle) {
+                    timer.toggleSound();
+                }
+                break;
+        }
+    });
 });
