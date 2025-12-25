@@ -14,10 +14,6 @@ class PomodoroTimer {
         // Settings
         this.workDuration = 25; // minutes
         this.breakDuration = 5; // minutes
-<<<<<<< HEAD
-        this.soundEnabled = localStorage.getItem('pomodoroSound') !== 'false';
-=======
->>>>>>> bugfix
 
         // DOM Elements
         this.timeDisplay = document.getElementById('timeDisplay');
@@ -173,22 +169,6 @@ class PomodoroTimer {
         this.progressCircle.style.strokeDashoffset = offset;
     }
 
-<<<<<<< HEAD
-    toggleSound() {
-        this.soundEnabled = !this.soundEnabled;
-        localStorage.setItem('pomodoroSound', this.soundEnabled);
-
-        if (this.soundEnabled) {
-            this.soundToggle.classList.remove('muted');
-            this.soundToggle.querySelector('span').textContent = '🔔';
-        } else {
-            this.soundToggle.classList.add('muted');
-            this.soundToggle.querySelector('span').textContent = '🔕';
-        }
-    }
-
-=======
->>>>>>> bugfix
     showNotification(message) {
         // Simple notification (can be enhanced with browser notifications later)
         if (this.soundEnabled && 'Notification' in window && Notification.permission === 'granted') {
@@ -314,10 +294,6 @@ class TaskList {
 // Initialize timer and task list when page loads
 document.addEventListener('DOMContentLoaded', () => {
     const timer = new PomodoroTimer();
-<<<<<<< HEAD
-    const taskList = new TaskList();
-=======
->>>>>>> bugfix
 
     // Request notification permission
     if ('Notification' in window && Notification.permission === 'default') {
