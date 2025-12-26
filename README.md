@@ -63,7 +63,7 @@ This project demonstrates a complete Git branching workflow with multiple featur
 
 ### Visual Git Graph
 
-![Git Workflow Graph](uploaded_image_1766731151983.png)
+![Git Workflow Graph](image.png)
 
 *Actual Git commit history showing branch creation, merging, and conflict resolution*
 
