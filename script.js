@@ -10,6 +10,7 @@ class PomodoroTimer {
         this.totalTime = 25 * 60;
         this.timerInterval = null;
         this.sessionsCompleted = 0;
+        this.soundEnabled = true;
 
         // Settings
         this.workDuration = 25; // minutes
@@ -24,6 +25,7 @@ class PomodoroTimer {
         this.resetBtn = document.getElementById('resetBtn');
         this.workDurationInput = document.getElementById('workDuration');
         this.breakDurationInput = document.getElementById('breakDuration');
+        this.soundToggle = document.getElementById('soundToggle');
         this.progressCircle = document.querySelector('.progress-ring-circle-fill');
 
         // Circle calculations
@@ -35,13 +37,14 @@ class PomodoroTimer {
 
     init() {
         // Set up progress circle
-        this.progressCircle.style.strokeDasharray = `${this.circumference} ${this.circumference}`;
+        this.progressCircle.style.strokeDasharray = `${this.circumference} ${this.circumference} `;
         this.progressCircle.style.strokeDashoffset = 0;
 
         // Event listeners
         this.startBtn.addEventListener('click', () => this.start());
         this.pauseBtn.addEventListener('click', () => this.pause());
         this.resetBtn.addEventListener('click', () => this.reset());
+        this.soundToggle.addEventListener('click', () => this.toggleSound());
 
         this.workDurationInput.addEventListener('change', (e) => {
             this.workDuration = parseInt(e.target.value);
@@ -65,9 +68,17 @@ class PomodoroTimer {
             this.isRunning = true;
             this.isPaused = false;
 
+            // Clear any existing interval first (safeguard against multiple intervals)
+            if (this.timerInterval) {
+                clearInterval(this.timerInterval);
+            }
+
             // Update button states
             this.startBtn.disabled = true;
             this.pauseBtn.disabled = false;
+
+            // Reset button text to "Start" when resuming
+            this.startBtn.querySelector('span').textContent = 'Start';
 
             // Start countdown
             this.timerInterval = setInterval(() => this.tick(), 1000);
@@ -160,7 +171,7 @@ class PomodoroTimer {
         // Update time display
         const minutes = Math.floor(this.timeLeft / 60);
         const seconds = this.timeLeft % 60;
-        this.timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        this.timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} `;
 
         // Update progress circle
         const progress = this.timeLeft / this.totalTime;
@@ -169,19 +180,32 @@ class PomodoroTimer {
     }
 
     showNotification(message) {
-        // Simple notification (can be enhanced with browser notifications later)
-        if ('Notification' in window && Notification.permission === 'granted') {
+        if ('Notification' in window && Notification.permission === 'granted' && this.soundEnabled) {
             new Notification('Pomodoro Timer', {
                 body: message,
                 icon: '🍅'
             });
         }
     }
+
+    toggleSound() {
+        this.soundEnabled = !this.soundEnabled;
+
+        // Update button appearance
+        if (this.soundEnabled) {
+            this.soundToggle.classList.remove('muted');
+            this.soundToggle.innerHTML = '<i class="fas fa-bell"></i>';
+        } else {
+            this.soundToggle.classList.add('muted');
+            this.soundToggle.innerHTML = '<i class="fas fa-bell-slash"></i>';
+        }
+    }
 }
 
-// Initialize timer when page loads
+// Initialize timer and task list when page loads
 document.addEventListener('DOMContentLoaded', () => {
     const timer = new PomodoroTimer();
+    const taskList = new TaskList();
 
     // Request notification permission
     if ('Notification' in window && Notification.permission === 'default') {
@@ -215,3 +239,93 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+// ========== TaskList Class ==========
+class TaskList {
+    constructor() {
+        this.tasks = this.loadTasks();
+        this.taskInput = document.getElementById('taskInput');
+        this.addTaskBtn = document.getElementById('addTaskBtn');
+        this.tasksList = document.getElementById('tasksList');
+
+        this.init();
+    }
+
+    init() {
+        this.addTaskBtn.addEventListener('click', () => this.addTask());
+        this.taskInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') this.addTask();
+        });
+
+        this.renderTasks();
+    }
+
+    addTask() {
+        const taskText = this.taskInput.value.trim();
+        if (!taskText) return;
+
+        const task = {
+            id: Date.now(),
+            text: taskText,
+            completed: false
+        };
+
+        this.tasks.push(task);
+        this.saveTasks();
+        this.renderTasks();
+        this.taskInput.value = '';
+    }
+
+    toggleTask(id) {
+        const task = this.tasks.find(t => t.id === id);
+        if (task) {
+            task.completed = !task.completed;
+            this.saveTasks();
+            this.renderTasks();
+        }
+    }
+
+    deleteTask(id) {
+        this.tasks = this.tasks.filter(t => t.id !== id);
+        this.saveTasks();
+        this.renderTasks();
+    }
+
+    renderTasks() {
+        this.tasksList.innerHTML = '';
+
+        this.tasks.forEach(task => {
+            const taskItem = document.createElement('div');
+            taskItem.className = `task-item${task.completed ? ' completed' : ''}`;
+
+            taskItem.innerHTML = `
+                <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''}>
+                <span class="task-text">${this.escapeHtml(task.text)}</span>
+                <button class="task-delete">×</button>
+            `;
+
+            const checkbox = taskItem.querySelector('.task-checkbox');
+            checkbox.addEventListener('change', () => this.toggleTask(task.id));
+
+            const deleteBtn = taskItem.querySelector('.task-delete');
+            deleteBtn.addEventListener('click', () => this.deleteTask(task.id));
+
+            this.tasksList.appendChild(taskItem);
+        });
+    }
+
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    saveTasks() {
+        localStorage.setItem('pomodoroTasks', JSON.stringify(this.tasks));
+    }
+
+    loadTasks() {
+        const saved = localStorage.getItem('pomodoroTasks');
+        return saved ? JSON.parse(saved) : [];
+    }
+}
